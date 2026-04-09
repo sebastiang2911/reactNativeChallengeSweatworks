@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler/jestSetup';
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
 /* global jest */
 
@@ -44,4 +45,5 @@ jest.mock('react-native-fast-image', () => {
   return FastImageMock;
 });
 
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 jest.mock('./assets/icons/searchIcon.svg', () => 'SearchIconSvg');

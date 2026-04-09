@@ -85,6 +85,8 @@ function DetailScreen({ navigation, route }: Props) {
 
   const backdropUri = getTmdbImageUrl(movie.backdropPath, 'w780');
   const posterUri = getTmdbImageUrl(movie.posterPath, 'w500');
+  const hasBackdropImage = Boolean(backdropUri);
+  const hasPosterImage = Boolean(posterUri);
 
   return (
     <SafeArea>
@@ -105,8 +107,8 @@ function DetailScreen({ navigation, route }: Props) {
 
         <Hero>
           <OverlapStage>
-            <Backdrop style={{ backgroundColor: movie.accent }}>
-              {backdropUri ? (
+            <Backdrop $hasImage={hasBackdropImage}>
+              {hasBackdropImage ? (
                 <BackdropImage
                   source={{ uri: backdropUri }}
                   resizeMode={FastImage.resizeMode.cover}
@@ -120,8 +122,8 @@ function DetailScreen({ navigation, route }: Props) {
                 <RatingText>{movie.rating.toFixed(1)}</RatingText>
               </RatingBadge>
             </Backdrop>
-            <PosterThumb style={{ backgroundColor: movie.accent }}>
-              {posterUri ? (
+            <PosterThumb $hasImage={hasPosterImage}>
+              {hasPosterImage ? (
                 <PosterThumbImage
                   source={{ uri: posterUri }}
                   resizeMode={FastImage.resizeMode.cover}

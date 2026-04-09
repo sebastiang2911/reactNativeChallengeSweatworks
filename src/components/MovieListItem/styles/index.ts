@@ -9,7 +9,7 @@ const Container = styled.Pressable`
   margin-bottom: ${spacing.lg}px;
 `;
 
-const Poster = styled.View<{ $accent: string }>`
+const Poster = styled.View<{ $accent: string; $hasImage: boolean }>`
   width: 120px;
   height: 160px;
   border-radius: 24px;
@@ -17,7 +17,8 @@ const Poster = styled.View<{ $accent: string }>`
   justify-content: flex-end;
   padding: ${spacing.sm}px;
   position: relative;
-  background-color: ${({ $accent }) => $accent};
+  background-color: ${({ $accent, $hasImage }) =>
+    $hasImage ? $accent : colors.surfaceMuted};
 `;
 
 const PosterImage = styled(FastImage)`
@@ -34,7 +35,7 @@ const PosterShade = styled.View`
   right: 0px;
   bottom: 0px;
   left: 0px;
-  background-color: rgba(15, 18, 24, 0.3);
+  background-color: rgba(15, 18, 24, 0.18);
 `;
 
 const PosterText = styled.Text`

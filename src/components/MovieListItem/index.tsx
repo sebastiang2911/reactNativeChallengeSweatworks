@@ -32,12 +32,13 @@ function MovieListItem({
   onPress,
 }: MovieListItemProps) {
   const imageUri = getTmdbImageUrl(movie.posterPath, 'w342');
+  const hasImage = Boolean(imageUri);
   const fallbackTitle = compactTitle ? movie.title.slice(0, 9) : movie.title;
 
   return (
     <Container disabled={!onPress} onPress={onPress}>
-      <Poster $accent={movie.accent}>
-        {imageUri ? (
+      <Poster $accent={movie.accent} $hasImage={hasImage}>
+        {hasImage ? (
           <PosterImage
             source={{ uri: imageUri }}
             resizeMode="cover"
@@ -55,7 +56,7 @@ function MovieListItem({
           </>
         )}
         <PosterShade pointerEvents="none" />
-        {!imageUri ? <PosterText>{fallbackTitle}</PosterText> : null}
+        {!hasImage ? <PosterText>{fallbackTitle}</PosterText> : null}
       </Poster>
 
       <Content>

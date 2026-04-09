@@ -51,13 +51,15 @@ const OverlapStage = styled.View`
   padding-bottom: 8px;
 `;
 
-const Backdrop = styled.View`
+const Backdrop = styled.View<{ $hasImage: boolean }>`
   height: 300px;
   overflow: hidden;
   align-items: center;
   justify-content: center;
   border-bottom-left-radius: 34px;
   border-bottom-right-radius: 34px;
+  background-color: ${({ $hasImage }) =>
+    $hasImage ? colors.surface : colors.surfaceMuted};
 `;
 
 const BackdropImage = styled(FastImage)`
@@ -94,7 +96,7 @@ const DetailCard = styled.View`
   background-color: ${colors.background};
 `;
 
-const PosterThumb = styled.View`
+const PosterThumb = styled.View<{ $hasImage: boolean }>`
   position: absolute;
   top: 224px;
   left: 16px;
@@ -103,6 +105,8 @@ const PosterThumb = styled.View`
   height: 148px;
   border-radius: 22px;
   overflow: hidden;
+  background-color: ${({ $hasImage }) =>
+    $hasImage ? colors.surface : colors.surfaceMuted};
 `;
 
 const PosterThumbImage = styled(FastImage)`

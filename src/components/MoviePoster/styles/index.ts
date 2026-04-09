@@ -9,7 +9,11 @@ const PosterWrapper = styled.View<{ $isLarge: boolean }>`
   margin-bottom: ${({ $isLarge }) => ($isLarge ? '0px' : '18px')};
 `;
 
-const PressablePoster = styled.Pressable<{ $isLarge: boolean; $accent: string }>`
+const PressablePoster = styled.Pressable<{
+  $isLarge: boolean;
+  $accent: string;
+  $hasImage: boolean;
+}>`
   width: ${({ $isLarge }) => ($isLarge ? '214px' : '100%')};
   ${({ $isLarge }) =>
     $isLarge
@@ -24,7 +28,8 @@ const PressablePoster = styled.Pressable<{ $isLarge: boolean; $accent: string }>
   justify-content: flex-end;
   padding: 14px;
   position: relative;
-  background-color: ${({ $accent }) => $accent};
+  background-color: ${({ $accent, $hasImage }) =>
+    $hasImage ? $accent : colors.surfaceMuted};
 `;
 
 const PosterImage = styled(FastImage)`

@@ -21,6 +21,7 @@ type MoviePosterProps = {
 function MoviePoster({ movie, size = 'small', rank, onPress }: MoviePosterProps) {
   const isLarge = size === 'large';
   const imageUri = getTmdbImageUrl(movie.posterPath, isLarge ? 'w780' : 'w500');
+  const hasImage = Boolean(imageUri);
 
   return (
     <PosterWrapper $isLarge={isLarge}>
@@ -29,8 +30,9 @@ function MoviePoster({ movie, size = 'small', rank, onPress }: MoviePosterProps)
         onPress={onPress}
         $isLarge={isLarge}
         $accent={movie.accent}
+        $hasImage={hasImage}
       >
-        {imageUri ? (
+        {hasImage ? (
           <PosterImage
             source={{ uri: imageUri }}
             resizeMode="cover"
@@ -43,7 +45,7 @@ function MoviePoster({ movie, size = 'small', rank, onPress }: MoviePosterProps)
           />
         ) : null}
         <PosterShade pointerEvents="none" />
-        {!imageUri ? (
+        {!hasImage ? (
           <PosterTitle $isLarge={isLarge}>{movie.title}</PosterTitle>
         ) : null}
       </PressablePoster>
