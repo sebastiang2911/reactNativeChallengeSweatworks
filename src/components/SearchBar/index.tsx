@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
 
-import { SearchIcon } from './Icons';
-import { colors, spacing } from '../theme';
+import { colors } from '../../theme';
+import { SearchIcon } from '../Icons';
+import { Container, Input } from './styles';
 
 type SearchBarProps = {
   placeholder?: string;
@@ -13,43 +13,25 @@ type SearchBarProps = {
 };
 
 function SearchBar({
-  placeholder,
+  placeholder = 'Search',
   value,
   onChangeText,
   editable = true,
   onFocus,
 }: SearchBarProps) {
   return (
-    <View style={styles.container}>
-      <TextInput
+    <Container>
+      <Input
         placeholder={placeholder}
         placeholderTextColor={colors.textMuted}
         value={value}
         onChangeText={onChangeText}
         editable={editable}
         onFocus={onFocus}
-        style={styles.input}
       />
       <SearchIcon size={26} color={colors.textMuted} />
-    </View>
+    </Container>
   );
 }
 
 export { SearchBar };
-
-const styles = StyleSheet.create({
-  container: {
-    height: 62,
-    borderRadius: 22,
-    backgroundColor: colors.surfaceMuted,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: spacing.lg,
-    gap: spacing.sm,
-  },
-  input: {
-    flex: 1,
-    color: colors.text,
-    fontSize: 17,
-  },
-});

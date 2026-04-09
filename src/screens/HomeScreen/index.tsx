@@ -52,6 +52,12 @@ function HomeScreen({ navigation }: Props) {
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(!isTmdbConfigured());
 
+  const categoryTitles: Record<(typeof categories)[number], string> = {
+    'Now playing': 'Now Playing',
+    Upcoming: 'Upcoming',
+    'Top rated': 'Top Rated',
+  };
+
   useEffect(() => {
     let isMounted = true;
 
@@ -127,7 +133,7 @@ function HomeScreen({ navigation }: Props) {
                     key={category}
                     onPress={() => setSelectedCategory(category)}
                   >
-                    <CategoryLabel $active={active}>{category}</CategoryLabel>
+                    <CategoryLabel $active={active}>{categoryTitles[category]}</CategoryLabel>
                     <CategoryIndicator $active={active} />
                   </CategoryButton>
                 );
@@ -135,7 +141,7 @@ function HomeScreen({ navigation }: Props) {
             </CategoryRow>
 
             <Grid>
-              {categoryMovies[selectedCategory].map(movie => (
+              {categoryMovies[selectedCategory].slice(0, 6).map(movie => (
                 <MoviePoster
                   key={movie.id}
                   movie={movie}

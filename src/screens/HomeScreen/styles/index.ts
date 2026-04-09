@@ -51,7 +51,8 @@ const LoadingText = styled.Text`
 
 const CategoryRow = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  gap: ${spacing.xl}px;
   margin-top: ${spacing.sm}px;
   margin-bottom: ${spacing.lg}px;
 `;

@@ -4,7 +4,13 @@ import FastImage from 'react-native-fast-image';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { BackIcon, BookmarkIcon } from '../../components/Icons';
+import CalendarIcon from '../../../assets/icons/calendar.svg';
+import ClockIcon from '../../../assets/icons/clock.svg';
+import RibbonIcon from '../../../assets/icons/ribbon.svg';
+import StarIcon from '../../../assets/icons/star.svg';
+import WatchlistSaveIcon from '../../../assets/icons/watchlist-save.svg';
+import { BackIcon } from '../../components/Icons';
+import { useWatchlist } from '../../context/WatchlistContext';
 import { Movie } from '../../data/movies';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import {
@@ -24,8 +30,11 @@ import {
   HeaderTitle,
   Hero,
   LoadingWrap,
-  MetaItem,
+  MetaIconWrap,
+  MetaItemText,
   MetaRow,
+  MetaSeparator,
+  OverlapStage,
   PlayButton,
   PlayTriangle,
   PosterThumb,
@@ -44,6 +53,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
 function DetailScreen({ navigation, route }: Props) {
   const [movie, setMovie] = useState<Movie>(route.params.movie);
   const [loading, setLoading] = useState(false);
+  const { isInWatchlist, toggleWatchlist } = useWatchlist();
 
   useEffect(() => {
     let isMounted = true;
@@ -81,64 +91,91 @@ function DetailScreen({ navigation, route }: Props) {
       <Scroll showsVerticalScrollIndicator={false}>
         <Header>
           <BackButton onPress={() => navigation.goBack()}>
-            <BackIcon />
+            <BackIcon size={20} />
           </BackButton>
           <HeaderTitle>Detail</HeaderTitle>
-          <HeaderAction>
-            <BookmarkIcon color={colors.text} />
+          <HeaderAction onPress={() => toggleWatchlist(movie)}>
+            <WatchlistSaveIcon
+              width={20}
+              height={26}
+              opacity={isInWatchlist(movie.id) ? 1 : 0.6}
+            />
           </HeaderAction>
         </Header>
 
         <Hero>
-          <Backdrop style={{ backgroundColor: movie.accent }}>
-            {backdropUri ? (
-              <BackdropImage
-                source={{ uri: backdropUri }}
-                resizeMode={FastImage.resizeMode.cover}
-              />
+          <OverlapStage>
+            <Backdrop style={{ backgroundColor: movie.accent }}>
+              {backdropUri ? (
+                <BackdropImage
+                  source={{ uri: backdropUri }}
+                  resizeMode={FastImage.resizeMode.cover}
+                />
+              ) : null}
+              <PlayButton>
+                <PlayTriangle />
+              </PlayButton>
+              <RatingBadge>
+                <StarIcon color="#FF8700" width={18} height={18} />
+                <RatingText>{movie.rating.toFixed(1)}</RatingText>
+              </RatingBadge>
+            </Backdrop>
+            <PosterThumb style={{ backgroundColor: movie.accent }}>
+              {posterUri ? (
+                <PosterThumbImage
+                  source={{ uri: posterUri }}
+                  resizeMode={FastImage.resizeMode.cover}
+                />
+              ) : null}
+            </PosterThumb>
+
+            <DetailCard>
+              <TitleRow>
+                <Title numberOfLines={2}>{movie.title}</Title>
+              </TitleRow>
+
+            </DetailCard>
+            <MetaRow>
+              {movie.year ? (
+                <>
+                  <MetaIconWrap>
+                    <CalendarIcon color={colors.textMuted} width={16} height={16} />
+                    <MetaItemText>{movie.year}</MetaItemText>
+                  </MetaIconWrap>
+                  <MetaSeparator />
+                </>
+              ) : null}
+              {movie.duration ? (
+                <>
+                  <MetaIconWrap>
+                    <ClockIcon color={colors.textMuted} width={16} height={16} />
+                    <MetaItemText>{movie.duration} Minutes</MetaItemText>
+                  </MetaIconWrap>
+                  <MetaSeparator />
+                </>
+              ) : null}
+              {movie.genre ? (
+                <MetaIconWrap>
+                  <RibbonIcon color={colors.textMuted} width={16} height={16} />
+                  <MetaItemText>{movie.genre}</MetaItemText>
+                </MetaIconWrap>
+              ) : null}
+            </MetaRow>
+
+            {loading ? (
+              <LoadingWrap>
+                <ActivityIndicator size="small" color={colors.accent} />
+              </LoadingWrap>
             ) : null}
-            <PlayButton>
-              <PlayTriangle />
-            </PlayButton>
-          </Backdrop>
+
+            <Body>
+              <Summary>
+                {movie.overview ??
+                  'No synopsis is available for this movie yet.'}
+              </Summary>
+            </Body>
+          </OverlapStage>
         </Hero>
-
-        <DetailCard>
-          <PosterThumb style={{ backgroundColor: movie.accent }}>
-            {posterUri ? (
-              <PosterThumbImage
-                source={{ uri: posterUri }}
-                resizeMode={FastImage.resizeMode.cover}
-              />
-            ) : null}
-          </PosterThumb>
-
-          <TitleRow>
-            <Title>{movie.title}</Title>
-            <RatingBadge>
-              <RatingText>{movie.rating.toFixed(1)}</RatingText>
-            </RatingBadge>
-          </TitleRow>
-
-          <MetaRow>
-            {movie.year ? <MetaItem>{movie.year}</MetaItem> : null}
-            {movie.duration ? <MetaItem>{movie.duration} Minutes</MetaItem> : null}
-            {movie.genre ? <MetaItem>{movie.genre}</MetaItem> : null}
-          </MetaRow>
-
-          {loading ? (
-            <LoadingWrap>
-              <ActivityIndicator size="small" color={colors.accent} />
-            </LoadingWrap>
-          ) : null}
-
-          <Body>
-            <Summary>
-              {movie.overview ??
-                'No synopsis is available for this movie yet.'}
-            </Summary>
-          </Body>
-        </DetailCard>
       </Scroll>
     </SafeArea>
   );

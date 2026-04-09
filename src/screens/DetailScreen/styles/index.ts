@@ -17,38 +17,47 @@ const Header = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: ${spacing.xl}px;
+  padding-top: ${spacing.xl}px;
+  padding-bottom: ${spacing.lg}px;
+  padding-horizontal: 28px;
 `;
 
 const BackButton = styled.Pressable`
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   justify-content: center;
+  align-items: flex-start;
 `;
 
-const HeaderAction = styled.View`
-  width: 36px;
-  height: 36px;
-  align-items: center;
+const HeaderAction = styled.Pressable`
+  width: 40px;
+  height: 40px;
+  align-items: flex-end;
   justify-content: center;
 `;
 
 const HeaderTitle = styled.Text`
   color: ${colors.text};
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 800;
 `;
 
 const Hero = styled.View`
-  padding-horizontal: ${spacing.xl}px;
+  padding-bottom: 8px;
+`;
+
+const OverlapStage = styled.View`
+  position: relative;
+  padding-bottom: 8px;
 `;
 
 const Backdrop = styled.View`
-  height: 240px;
-  border-radius: 30px;
+  height: 300px;
   overflow: hidden;
   align-items: center;
   justify-content: center;
+  border-bottom-left-radius: 34px;
+  border-bottom-right-radius: 34px;
 `;
 
 const BackdropImage = styled(FastImage)`
@@ -58,10 +67,10 @@ const BackdropImage = styled(FastImage)`
 
 const PlayButton = styled.View`
   position: absolute;
-  width: 84px;
-  height: 84px;
-  border-radius: 42px;
-  background-color: rgba(31, 35, 43, 0.28);
+  width: 88px;
+  height: 88px;
+  border-radius: 44px;
+  background-color: rgba(243, 245, 247, 0.22);
   align-items: center;
   justify-content: center;
 `;
@@ -75,23 +84,25 @@ const PlayTriangle = styled.View`
   border-top-color: transparent;
   border-bottom-color: transparent;
   border-left-color: ${colors.text};
-  margin-left: 6px;
+  margin-left: 7px;
 `;
 
 const DetailCard = styled.View`
-  margin-top: -54px;
-  margin-horizontal: ${spacing.xl}px;
-  padding: ${spacing.xl}px;
-  border-radius: 30px;
+  padding-top: 20px;
+  padding-bottom: 16px;
+  margin-left: 30px;
   background-color: ${colors.background};
 `;
 
 const PosterThumb = styled.View`
-  width: 120px;
-  height: 160px;
-  border-radius: 24px;
+  position: absolute;
+  top: 224px;
+  left: 16px;
+  z-index: 3;
+  width: 108px;
+  height: 148px;
+  border-radius: 22px;
   overflow: hidden;
-  margin-bottom: ${spacing.lg}px;
 `;
 
 const PosterThumbImage = styled(FastImage)`
@@ -102,55 +113,84 @@ const PosterThumbImage = styled(FastImage)`
 const TitleRow = styled.View`
   flex-direction: row;
   align-items: flex-start;
-  gap: ${spacing.md}px;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 118px;
 `;
 
 const Title = styled.Text`
-  flex: 1;
   color: ${colors.text};
-  font-size: 22px;
-  line-height: 34px;
-  font-weight: 800;
+  font-size: 18px;
+  line-height: 25px;
+  font-weight: 700;
+  text-align: left;
+  max-width: 220px;
 `;
 
 const RatingBadge = styled.View`
-  padding-horizontal: 16px;
-  padding-vertical: 10px;
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 2;
+  min-width: 76px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding-horizontal: 12px;
+  padding-vertical: 7px;
   border-radius: 18px;
-  background-color: rgba(255, 179, 71, 0.14);
+  background-color: rgba(17, 19, 25, 0.82);
 `;
 
 const RatingText = styled.Text`
-  color: ${colors.warning};
-  font-size: 20px;
+  color: #ff8700;
+  font-size: 16px;
   font-weight: 800;
 `;
 
 const MetaRow = styled.View`
   flex-direction: row;
-  flex-wrap: wrap;
-  gap: ${spacing.md}px;
-  margin-top: ${spacing.lg}px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin-top: 30px;
+  column-gap: 10px;
+  align-self: center;
 `;
 
-const MetaItem = styled.Text`
+const MetaIconWrap = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+`;
+
+const MetaSeparator = styled.View`
+  width: 1px;
+  height: 16px;
+  background-color: rgba(160, 167, 180, 0.35);
+`;
+
+const MetaItemText = styled.Text`
   color: ${colors.textMuted};
-  font-size: 16px;
+  font-size: 14px;
 `;
 
 const LoadingWrap = styled.View`
-  margin-top: ${spacing.lg}px;
+  margin-top: 12px;
   align-items: flex-start;
+  padding-left: 118px;
 `;
 
 const Body = styled.View`
-  margin-top: ${spacing.xl}px;
+  margin-top: 14px;
+  margin-horizontal: 20px;
 `;
 
 const Summary = styled.Text`
   color: ${colors.text};
-  font-size: 16px;
-  line-height: 30px;
+  font-size: 14px;
+  line-height: 20px;
 `;
 
 export {
@@ -164,8 +204,11 @@ export {
   HeaderTitle,
   Hero,
   LoadingWrap,
-  MetaItem,
+  MetaIconWrap,
+  MetaItemText,
   MetaRow,
+  MetaSeparator,
+  OverlapStage,
   PlayButton,
   PlayTriangle,
   PosterThumb,
