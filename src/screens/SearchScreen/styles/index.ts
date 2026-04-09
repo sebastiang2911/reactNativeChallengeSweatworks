@@ -18,8 +18,10 @@ const Header = styled.View`
 
 const HeaderTitle = styled.Text`
   color: ${colors.text};
-  font-size: 34px;
-  font-weight: 800;
+  font-family: 'Montserrat';
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 600;
 `;
 
 const SearchWrapper = styled.View`
@@ -60,8 +62,11 @@ const EmptyState = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  align-self: center;
   padding-horizontal: 48px;
   gap: ${spacing.md}px;
+  width: 60%;
+
 `;
 
 const EmptyIconWrap = styled.View`
@@ -74,18 +79,23 @@ const EmptyIconWrap = styled.View`
 
 const EmptyTitle = styled.Text`
   color: ${colors.text};
+  font-family: 'Montserrat';
   text-align: center;
   font-size: 16px;
-  line-height: 28px;
-  font-weight: 800;
+  line-height: 26px;
+  font-weight: 600;
+  letter-spacing: 0.12px;
+  text-transform: capitalize;
 `;
 
 const EmptyDescription = styled.Text`
   color: ${colors.textMuted};
+  font-family: 'Montserrat';
   text-align: center;
-  font-size: 15px;
-  line-height: 24px;
+  font-size: 12px;
+  line-height: 19px;
   font-weight: 500;
+  letter-spacing: 0.12px;
 `;
 
 export {

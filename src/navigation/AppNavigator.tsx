@@ -59,7 +59,8 @@ function TabsNavigator() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.background,
-          borderTopColor: colors.surfaceBorder,
+          borderTopWidth: 2,
+          borderTopColor: colors.tabBarBorder,
           height: 88,
           paddingTop: 10,
           paddingBottom: 12,

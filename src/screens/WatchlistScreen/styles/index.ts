@@ -15,8 +15,10 @@ const Content = styled.View`
 
 const Title = styled.Text`
   color: ${colors.text};
-  font-size: 30px;
-  font-weight: 800;
+  font-family: 'Montserrat';
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 600;
   margin-top: ${spacing.md}px;
   text-align: center;
 `;
@@ -31,7 +33,9 @@ const EmptyState = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
+  align-self: center;
   padding-bottom: 88px;
+  width: 60%;
 `;
 
 const IconWrapper = styled.View`
@@ -40,16 +44,23 @@ const IconWrapper = styled.View`
 
 const Subtitle = styled.Text`
   color: ${colors.text};
-  font-size: 32px;
-  font-weight: 800;
+  font-family: 'Montserrat';
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 600;
+  letter-spacing: 0.12px;
   text-align: center;
+  text-transform: capitalize;
   margin-bottom: ${spacing.md}px;
 `;
 
 const Description = styled.Text`
   color: ${colors.textMuted};
-  font-size: 16px;
-  line-height: 28px;
+  font-family: 'Montserrat';
+  font-size: 12px;
+  line-height: 19px;
+  font-weight: 500;
+  letter-spacing: 0.12px;
   text-align: center;
 `;
 

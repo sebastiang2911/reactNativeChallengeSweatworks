@@ -7,6 +7,7 @@ const PosterWrapper = styled.View<{ $isLarge: boolean }>`
   width: ${({ $isLarge }) => ($isLarge ? '214px' : '31%')};
   margin-right: ${({ $isLarge }) => ($isLarge ? '22px' : '0px')};
   margin-bottom: ${({ $isLarge }) => ($isLarge ? '0px' : '18px')};
+  position: relative;
 `;
 
 const PressablePoster = styled.Pressable<{
@@ -58,14 +59,17 @@ const PosterTitle = styled.Text<{ $isLarge: boolean }>`
 
 const RankLabel = styled.Text`
   position: absolute;
-  left: -16px;
+  left: -18px;
   bottom: -18px;
-  color: ${colors.accentSoft};
-  font-size: 78px;
-  line-height: 82px;
-  font-weight: 800;
-  text-shadow-color: ${colors.accent};
-  text-shadow-radius: 1px;
+  z-index: 2;
+  color: #242a32;
+  font-family: 'Montserrat';
+  font-size: 96px;
+  line-height: 117px;
+  font-weight: 700;
+  text-shadow-color: ${colors.tabBarBorder};
+  text-shadow-offset: 1px 1px;
+  text-shadow-radius: 4px;
 `;
 
 export {
