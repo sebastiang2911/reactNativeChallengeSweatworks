@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert, Linking } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -10,6 +10,7 @@ import RibbonIcon from '../../../assets/icons/ribbon.svg';
 import StarIcon from '../../../assets/icons/star.svg';
 import WatchlistSaveIcon from '../../../assets/icons/watchlist-save.svg';
 import { BackIcon } from '../../components/Icons';
+import { MetaInfo } from '../../components/shared';
 import { useWatchlist } from '../../context/WatchlistContext';
 import { Movie } from '../../data/movies';
 import { RootStackParamList } from '../../navigation/AppNavigator';
@@ -24,14 +25,17 @@ import {
   Backdrop,
   BackdropImage,
   Body,
+  BodyAction,
+  BodyActionLabel,
+  BodyActionMeta,
   DetailCard,
   Header,
   HeaderAction,
   HeaderTitle,
   Hero,
   LoadingWrap,
-  MetaIconWrap,
-  MetaItemText,
+  metaItemStyle,
+  metaItemTextStyle,
   MetaRow,
   MetaSeparator,
   OverlapStage,
@@ -87,6 +91,27 @@ function DetailScreen({ navigation, route }: Props) {
   const posterUri = getTmdbImageUrl(movie.posterPath, 'w500');
   const hasBackdropImage = Boolean(backdropUri);
   const hasPosterImage = Boolean(posterUri);
+  const hasTrailer = Boolean(movie.trailerUrl);
+
+  async function handleOpenTrailer() {
+    if (!movie.trailerUrl) {
+      Alert.alert('Trailer unavailable', 'This movie does not have a trailer available right now.');
+      return;
+    }
+
+    try {
+      const supported = await Linking.canOpenURL(movie.trailerUrl);
+
+      if (!supported) {
+        Alert.alert('Trailer unavailable', 'Unable to open the trailer on this device.');
+        return;
+      }
+
+      await Linking.openURL(movie.trailerUrl);
+    } catch {
+      Alert.alert('Trailer unavailable', 'Unable to open the trailer on this device.');
+    }
+  }
 
   return (
     <SafeArea>
@@ -110,11 +135,11 @@ function DetailScreen({ navigation, route }: Props) {
             <Backdrop $hasImage={hasBackdropImage}>
               {hasBackdropImage ? (
                 <BackdropImage
-                  source={{ uri: backdropUri }}
+                  source={{ uri: backdropUri ?? undefined }}
                   resizeMode={FastImage.resizeMode.cover}
                 />
               ) : null}
-              <PlayButton>
+              <PlayButton onPress={handleOpenTrailer} disabled={!hasTrailer}>
                 <PlayTriangle />
               </PlayButton>
               <RatingBadge>
@@ -125,7 +150,7 @@ function DetailScreen({ navigation, route }: Props) {
             <PosterThumb $hasImage={hasPosterImage}>
               {hasPosterImage ? (
                 <PosterThumbImage
-                  source={{ uri: posterUri }}
+                  source={{ uri: posterUri ?? undefined }}
                   resizeMode={FastImage.resizeMode.cover}
                 />
               ) : null}
@@ -140,27 +165,33 @@ function DetailScreen({ navigation, route }: Props) {
             <MetaRow>
               {movie.year ? (
                 <>
-                  <MetaIconWrap>
-                    <CalendarIcon color={colors.textMuted} width={16} height={16} />
-                    <MetaItemText>{movie.year}</MetaItemText>
-                  </MetaIconWrap>
+                  <MetaInfo
+                    icon={<CalendarIcon color={colors.textMuted} width={16} height={16} />}
+                    style={metaItemStyle}
+                    text={movie.year}
+                    textStyle={metaItemTextStyle}
+                  />
                   <MetaSeparator />
                 </>
               ) : null}
               {movie.duration ? (
                 <>
-                  <MetaIconWrap>
-                    <ClockIcon color={colors.textMuted} width={16} height={16} />
-                    <MetaItemText>{movie.duration} Minutes</MetaItemText>
-                  </MetaIconWrap>
+                  <MetaInfo
+                    icon={<ClockIcon color={colors.textMuted} width={16} height={16} />}
+                    style={metaItemStyle}
+                    text={`${movie.duration} Minutes`}
+                    textStyle={metaItemTextStyle}
+                  />
                   <MetaSeparator />
                 </>
               ) : null}
               {movie.genre ? (
-                <MetaIconWrap>
-                  <RibbonIcon color={colors.textMuted} width={16} height={16} />
-                  <MetaItemText>{movie.genre}</MetaItemText>
-                </MetaIconWrap>
+                <MetaInfo
+                  icon={<RibbonIcon color={colors.textMuted} width={16} height={16} />}
+                  style={metaItemStyle}
+                  text={movie.genre}
+                  textStyle={metaItemTextStyle}
+                />
               ) : null}
             </MetaRow>
 
@@ -171,6 +202,18 @@ function DetailScreen({ navigation, route }: Props) {
             ) : null}
 
             <Body>
+              <BodyAction
+                onPress={handleOpenTrailer}
+                disabled={!hasTrailer}
+                $disabled={!hasTrailer}
+              >
+                <BodyActionLabel>
+                  {hasTrailer ? 'Watch Trailer' : 'Trailer unavailable'}
+                </BodyActionLabel>
+                <BodyActionMeta>
+                  {hasTrailer ? 'Opens in YouTube' : 'No trailer found for this title'}
+                </BodyActionMeta>
+              </BodyAction>
               <Summary>
                 {movie.overview ??
                   'No synopsis is available for this movie yet.'}

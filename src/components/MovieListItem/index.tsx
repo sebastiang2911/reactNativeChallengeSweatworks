@@ -4,19 +4,18 @@ import CalendarIcon from '../../../assets/icons/calendar.svg';
 import ClockIcon from '../../../assets/icons/clock.svg';
 import RibbonIcon from '../../../assets/icons/ribbon.svg';
 import StarIcon from '../../../assets/icons/star.svg';
+import { MetaInfo, MovieArtwork } from '../shared';
 import { Movie } from '../../data/movies';
 import { getTmdbImageUrl } from '../../services/tmdb';
 import { colors } from '../../theme';
 import {
   Container,
   Content,
-  MetaRow,
-  MetaText,
-  Poster,
-  PosterImage,
-  PosterShade,
-  PosterText,
-  RatingText,
+  posterArtworkStyle,
+  posterFallbackTitleStyle,
+  ratingMetaTextStyle,
+  secondaryMetaTextStyle,
+  sharedMetaRowStyle,
   Title,
 } from './styles';
 
@@ -32,56 +31,52 @@ function MovieListItem({
   onPress,
 }: MovieListItemProps) {
   const imageUri = getTmdbImageUrl(movie.posterPath, 'w342');
-  const hasImage = Boolean(imageUri);
   const fallbackTitle = compactTitle ? movie.title.slice(0, 9) : movie.title;
 
   return (
     <Container disabled={!onPress} onPress={onPress}>
-      <Poster $accent={movie.accent} $hasImage={hasImage}>
-        {hasImage ? (
-          <PosterImage
-            source={{ uri: imageUri }}
-            resizeMode="cover"
-            onError={() => {
-              console.log('MovieListItem image load error', {
-                title: movie.title,
-                uri: imageUri,
-              });
-            }}
-          />
-        ) : (
-          <>
-            <PosterShade />
-            <PosterText>{fallbackTitle}</PosterText>
-          </>
-        )}
-        <PosterShade pointerEvents="none" />
-        {!hasImage ? <PosterText>{fallbackTitle}</PosterText> : null}
-      </Poster>
+      <MovieArtwork
+        accent={movie.accent}
+        containerStyle={posterArtworkStyle}
+        fallbackTitle={fallbackTitle}
+        fallbackTitleStyle={posterFallbackTitleStyle}
+        imageErrorContext="MovieListItem"
+        imageUri={imageUri}
+        shadeOpacity={0.18}
+        title={movie.title}
+      />
 
       <Content>
         <Title numberOfLines={1}>{movie.title}</Title>
-        <MetaRow>
-          <StarIcon color="#FF8700" width={16} height={16} />
-          <RatingText>{movie.rating.toFixed(1)}</RatingText>
-        </MetaRow>
+        <MetaInfo
+          icon={<StarIcon color="#FF8700" width={16} height={16} />}
+          style={sharedMetaRowStyle}
+          text={movie.rating.toFixed(1)}
+          textStyle={ratingMetaTextStyle}
+        />
         {movie.genre ? (
-          <MetaRow>
-            <RibbonIcon color={colors.textMuted} width={16} height={16} />
-            <MetaText>{movie.genre}</MetaText>
-          </MetaRow>
+          <MetaInfo
+            icon={<RibbonIcon color={colors.textMuted} width={16} height={16} />}
+            style={sharedMetaRowStyle}
+            text={movie.genre}
+            textStyle={secondaryMetaTextStyle}
+          />
         ) : null}
         {movie.year ? (
-          <MetaRow>
-            <CalendarIcon color={colors.textMuted} width={16} height={16} />
-            <MetaText>{movie.year}</MetaText>
-          </MetaRow>
+          <MetaInfo
+            icon={<CalendarIcon color={colors.textMuted} width={16} height={16} />}
+            style={sharedMetaRowStyle}
+            text={movie.year}
+            textStyle={secondaryMetaTextStyle}
+          />
         ) : null}
         {movie.duration ? (
-          <MetaRow>
-            <ClockIcon color={colors.textMuted} width={16} height={16} />
-            <MetaText>{movie.duration} minutes</MetaText>
-          </MetaRow>
+          <MetaInfo
+            icon={<ClockIcon color={colors.textMuted} width={16} height={16} />}
+            style={sharedMetaRowStyle}
+            text={`${movie.duration} minutes`}
+            textStyle={secondaryMetaTextStyle}
+          />
         ) : null}
       </Content>
     </Container>

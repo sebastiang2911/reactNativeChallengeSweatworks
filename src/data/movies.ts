@@ -9,6 +9,7 @@ export type Movie = {
   posterPath?: string | null;
   backdropPath?: string | null;
   overview?: string;
+  trailerUrl?: string;
 };
 
 export const categories = ['Now playing', 'Upcoming', 'Top rated'] as const;

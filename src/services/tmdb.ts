@@ -48,6 +48,17 @@ type TmdbMovie = {
   runtime?: number;
   poster_path?: string | null;
   backdrop_path?: string | null;
+  videos?: {
+    results?: TmdbVideo[];
+  };
+};
+
+type TmdbVideo = {
+  key: string;
+  official?: boolean;
+  published_at?: string;
+  site: string;
+  type: string;
 };
 
 type TmdbListResponse = {
@@ -114,6 +125,7 @@ function mapMovie(movie: TmdbMovie, index: number, genresMap: Record<number, str
   const genre =
     movie.genres?.[0]?.name ??
     movie.genre_ids?.map(genreId => genresMap[genreId]).find(Boolean);
+  const trailer = selectTrailer(movie.videos?.results);
 
   return {
     id: String(movie.id),
@@ -126,7 +138,55 @@ function mapMovie(movie: TmdbMovie, index: number, genresMap: Record<number, str
     posterPath: movie.poster_path ?? null,
     backdropPath: movie.backdrop_path ?? null,
     overview: movie.overview,
+    trailerUrl: trailer ? getYoutubeVideoUrl(trailer.key) : undefined,
   };
+}
+
+function getYoutubeVideoUrl(videoKey: string) {
+  return `https://www.youtube.com/watch?v=${videoKey}`;
+}
+
+function getVideoPriority(video: TmdbVideo) {
+  if (video.type === 'Trailer' && video.official) {
+    return 0;
+  }
+
+  if (video.type === 'Trailer') {
+    return 1;
+  }
+
+  if (video.type === 'Teaser') {
+    return 2;
+  }
+
+  if (video.type === 'Clip') {
+    return 3;
+  }
+
+  return 4;
+}
+
+function selectTrailer(videos?: TmdbVideo[]) {
+  if (!videos?.length) {
+    return null;
+  }
+
+  return (
+    videos
+      .filter(video => video.site === 'YouTube')
+      .sort((left, right) => {
+        const priorityDelta = getVideoPriority(left) - getVideoPriority(right);
+
+        if (priorityDelta !== 0) {
+          return priorityDelta;
+        }
+
+        const leftPublished = left.published_at ? Date.parse(left.published_at) : 0;
+        const rightPublished = right.published_at ? Date.parse(right.published_at) : 0;
+
+        return rightPublished - leftPublished;
+      })[0] ?? null
+  );
 }
 
 async function fetchCategory(category: (typeof categories)[number]) {
@@ -227,6 +287,9 @@ async function fetchMovieDetail(movieId: string, fallbackMovie?: Movie) {
     const response = await api.get<TmdbMovie>(`/movie/${movieId}`, {
       headers: {
         Authorization: `Bearer ${TMDB_READ_ACCESS_TOKEN}`,
+      },
+      params: {
+        append_to_response: 'videos',
       },
     });
     const mappedMovie = mapMovie(response.data, 0, genresMap);

@@ -1,4 +1,4 @@
-import FastImage from 'react-native-fast-image';
+import { TextStyle, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 
 import { colors, spacing } from '../../../theme';
@@ -7,41 +7,6 @@ const Container = styled.Pressable`
   flex-direction: row;
   align-items: flex-start;
   margin-bottom: ${spacing.lg}px;
-`;
-
-const Poster = styled.View<{ $accent: string; $hasImage: boolean }>`
-  width: 120px;
-  height: 160px;
-  border-radius: 24px;
-  overflow: hidden;
-  justify-content: flex-end;
-  padding: ${spacing.sm}px;
-  position: relative;
-  background-color: ${({ $accent, $hasImage }) =>
-    $hasImage ? $accent : colors.surfaceMuted};
-`;
-
-const PosterImage = styled(FastImage)`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-`;
-
-const PosterShade = styled.View`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  background-color: rgba(15, 18, 24, 0.18);
-`;
-
-const PosterText = styled.Text`
-  color: ${colors.text};
-  font-size: 18px;
-  font-weight: 700;
 `;
 
 const Content = styled.View`
@@ -58,38 +23,47 @@ const Title = styled.Text`
   margin-bottom: ${spacing.md}px;
 `;
 
-const MetaRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${spacing.xs}px;
-  margin-bottom: ${spacing.sm}px;
-`;
+const posterArtworkStyle: ViewStyle = {
+  width: 120,
+  height: 160,
+  borderRadius: 24,
+  padding: spacing.sm,
+};
 
-const RatingText = styled.Text`
-  color: #ff8700;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12px;
-`;
+const posterFallbackTitleStyle: TextStyle = {
+  color: colors.text,
+  fontSize: 18,
+  fontWeight: '700' as const,
+};
 
-const MetaText = styled.Text`
-  color: ${colors.textMuted};
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12px;
-`;
+const sharedMetaRowStyle: ViewStyle = {
+  gap: spacing.xs,
+  marginBottom: spacing.sm,
+};
+
+const ratingMetaTextStyle: TextStyle = {
+  color: '#ff8700',
+  fontSize: 12,
+  lineHeight: 12,
+  fontWeight: '600' as const,
+  letterSpacing: 0.12,
+};
+
+const secondaryMetaTextStyle: TextStyle = {
+  color: colors.textMuted,
+  fontSize: 12,
+  lineHeight: 12,
+  fontWeight: '600' as const,
+  letterSpacing: 0.12,
+};
 
 export {
   Container,
   Content,
-  MetaRow,
-  MetaText,
-  Poster,
-  PosterImage,
-  PosterShade,
-  PosterText,
-  RatingText,
+  posterArtworkStyle,
+  posterFallbackTitleStyle,
+  ratingMetaTextStyle,
+  secondaryMetaTextStyle,
+  sharedMetaRowStyle,
   Title,
 };

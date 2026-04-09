@@ -1,4 +1,4 @@
-import FastImage from 'react-native-fast-image';
+import { TextStyle, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 
 import { colors } from '../../../theme';
@@ -10,52 +10,24 @@ const PosterWrapper = styled.View<{ $isLarge: boolean }>`
   position: relative;
 `;
 
-const PressablePoster = styled.Pressable<{
-  $isLarge: boolean;
-  $accent: string;
-  $hasImage: boolean;
-}>`
-  width: ${({ $isLarge }) => ($isLarge ? '214px' : '100%')};
-  ${({ $isLarge }) =>
-    $isLarge
-      ? `
-    height: 300px;
-  `
-      : `
-    aspect-ratio: 0.72;
-  `}
-  border-radius: 24px;
-  overflow: hidden;
-  justify-content: flex-end;
-  padding: 14px;
-  position: relative;
-  background-color: ${({ $accent, $hasImage }) =>
-    $hasImage ? $accent : colors.surfaceMuted};
-`;
+function getPosterArtworkStyle(isLarge: boolean): ViewStyle {
+  return {
+    width: isLarge ? 214 : '100%',
+    height: isLarge ? 300 : undefined,
+    aspectRatio: isLarge ? undefined : 0.72,
+    borderRadius: 24,
+    padding: 14,
+  };
+}
 
-const PosterImage = styled(FastImage)`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-`;
-
-const PosterShade = styled.View`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  background-color: rgba(15, 18, 24, 0.14);
-`;
-
-const PosterTitle = styled.Text<{ $isLarge: boolean }>`
-  color: ${colors.text};
-  font-size: ${({ $isLarge }) => ($isLarge ? '24px' : '18px')};
-  line-height: ${({ $isLarge }) => ($isLarge ? '28px' : '22px')};
-  font-weight: 700;
-`;
+function getPosterTitleStyle(isLarge: boolean): TextStyle {
+  return {
+    color: colors.text,
+    fontSize: isLarge ? 24 : 18,
+    lineHeight: isLarge ? 28 : 22,
+    fontWeight: '700' as const,
+  };
+}
 
 const RankLabel = styled.Text`
   position: absolute;
@@ -73,10 +45,8 @@ const RankLabel = styled.Text`
 `;
 
 export {
-  PosterImage,
-  PosterShade,
-  PosterTitle,
   PosterWrapper,
-  PressablePoster,
+  getPosterArtworkStyle,
+  getPosterTitleStyle,
   RankLabel,
 };

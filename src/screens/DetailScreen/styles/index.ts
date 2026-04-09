@@ -1,3 +1,4 @@
+import { TextStyle, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
@@ -67,7 +68,7 @@ const BackdropImage = styled(FastImage)`
   height: 100%;
 `;
 
-const PlayButton = styled.View`
+const PlayButton = styled.Pressable`
   position: absolute;
   width: 88px;
   height: 88px;
@@ -163,11 +164,11 @@ const MetaRow = styled.View`
   align-self: center;
 `;
 
-const MetaIconWrap = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-`;
+const metaItemStyle: ViewStyle = {
+  flexDirection: 'row' as const,
+  alignItems: 'center' as const,
+  gap: 6,
+};
 
 const MetaSeparator = styled.View`
   width: 1px;
@@ -175,10 +176,10 @@ const MetaSeparator = styled.View`
   background-color: rgba(160, 167, 180, 0.35);
 `;
 
-const MetaItemText = styled.Text`
-  color: ${colors.textMuted};
-  font-size: 14px;
-`;
+const metaItemTextStyle: TextStyle = {
+  color: colors.textMuted,
+  fontSize: 14,
+};
 
 const LoadingWrap = styled.View`
   margin-top: 12px;
@@ -189,6 +190,31 @@ const LoadingWrap = styled.View`
 const Body = styled.View`
   margin-top: 14px;
   margin-horizontal: 20px;
+`;
+
+const BodyAction = styled.Pressable<{ $disabled: boolean }>`
+  margin-bottom: 18px;
+  padding-horizontal: 18px;
+  padding-vertical: 16px;
+  border-radius: 18px;
+  background-color: ${({ $disabled }) =>
+    $disabled ? colors.surface : colors.accentSoft};
+  border-width: 1px;
+  border-color: ${({ $disabled }) =>
+    $disabled ? colors.surfaceBorder : colors.accent};
+  opacity: ${({ $disabled }) => ($disabled ? 0.65 : 1)};
+`;
+
+const BodyActionLabel = styled.Text`
+  color: ${colors.text};
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+const BodyActionMeta = styled.Text`
+  margin-top: 4px;
+  color: ${colors.textMuted};
+  font-size: 13px;
 `;
 
 const Summary = styled.Text`
@@ -202,14 +228,17 @@ export {
   Backdrop,
   BackdropImage,
   Body,
+  BodyAction,
+  BodyActionLabel,
+  BodyActionMeta,
   DetailCard,
   Header,
   HeaderAction,
   HeaderTitle,
   Hero,
   LoadingWrap,
-  MetaIconWrap,
-  MetaItemText,
+  metaItemStyle,
+  metaItemTextStyle,
   MetaRow,
   MetaSeparator,
   OverlapStage,
