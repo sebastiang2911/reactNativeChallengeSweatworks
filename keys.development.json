@@ -1,0 +1,9 @@
+{
+  "secure": {
+    "TMDB_READ_ACCESS_TOKEN": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjN2UxYTJhNDFmNjYxODFkODlkN2I0MTEzZWI2ZjQ5OCIsIm5iZiI6MTc3NTcwNTU0OC4zMjA5OTk5LCJzdWIiOiI2OWQ3MWRjYzIwNTZmMmJiMWQ3YzFhZmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.97Um_WWKkvqXcm4hUbumWJ8_4iMxrXOC5a-nFR_5cPM"
+  },
+  "public": {
+    "TMDB_BASE_URL": "https://api.themoviedb.org/3",
+    "TMDB_IMAGE_BASE_URL": "https://image.tmdb.org/t/p/w500"
+  }
+}

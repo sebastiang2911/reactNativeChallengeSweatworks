@@ -86,7 +86,8 @@ function SearchScreen({ navigation }: Props) {
 
       {usingFallback ? (
         <HelperText>
-          Search uses TMDB when you add the read access token in `src/services/tmdb.ts`.
+          Search uses TMDB when you add the read access token in
+          `keys.development.json` and rebuild.
         </HelperText>
       ) : null}
 

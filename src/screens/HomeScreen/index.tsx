@@ -101,7 +101,8 @@ function HomeScreen({ navigation }: Props) {
 
         {usingFallback ? (
           <HelperText>
-            Add your TMDB read access token in `src/services/tmdb.ts` to load live data.
+            Add your TMDB read access token in `keys.development.json` and rebuild to
+            load live data.
           </HelperText>
         ) : null}
 
