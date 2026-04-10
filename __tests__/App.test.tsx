@@ -1,18 +1,20 @@
-/**
- * @format
- */
-
 import React from 'react';
-import ReactTestRenderer from 'react-test-renderer';
+import { render, screen, waitFor } from '@testing-library/react-native';
+
 import App from '../App';
 
 jest.mock('../src/navigation/AppNavigator', () => ({
-  AppNavigator: () => null,
+  AppNavigator: () => {
+    const React = require('react');
+    const { Text } = require('react-native');
+    return <Text>app navigator</Text>;
+  },
 }));
 
-test('renders correctly', async () => {
-  await ReactTestRenderer.act(async () => {
-    ReactTestRenderer.create(<App />);
-    await Promise.resolve();
+test('renders the app navigator', async () => {
+  render(<App />);
+
+  await waitFor(() => {
+    expect(screen.getByText('app navigator')).toBeOnTheScreen();
   });
 });

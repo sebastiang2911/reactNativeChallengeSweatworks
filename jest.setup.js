@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler/jestSetup';
+import '@testing-library/jest-native/extend-expect';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
 /* global jest */
@@ -45,5 +46,13 @@ jest.mock('react-native-fast-image', () => {
   return FastImageMock;
 });
 
+jest.mock('react-native-keys', () => ({
+  __esModule: true,
+  default: {
+    TMDB_BASE_URL: 'https://api.themoviedb.org/3',
+    TMDB_IMAGE_BASE_URL: 'https://image.tmdb.org/t/p/w500',
+    secureFor: jest.fn(() => ''),
+  },
+}));
+
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
-jest.mock('./assets/icons/searchIcon.svg', () => 'SearchIconSvg');
