@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 
 import { MovieArtwork } from '../shared';
 import { Movie } from '../../data/movies';
@@ -19,7 +20,8 @@ type MoviePosterProps = {
 
 function MoviePoster({ movie, size = 'small', rank, onPress }: MoviePosterProps) {
   const isLarge = size === 'large';
-  const imageUri = getTmdbImageUrl(movie.posterPath, isLarge ? 'w780' : 'w500');
+  const imageSize = isLarge && Platform.OS === 'ios' ? 'w500' : isLarge ? 'w780' : 'w500';
+  const imageUri = getTmdbImageUrl(movie.posterPath, imageSize);
 
   return (
     <PosterWrapper $isLarge={isLarge}>

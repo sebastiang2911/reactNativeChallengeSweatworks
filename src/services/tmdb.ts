@@ -1,6 +1,5 @@
 import axios from 'axios';
 import FastImage from 'react-native-fast-image';
-import Keys from 'react-native-keys';
 
 import {
   categories,
@@ -10,9 +9,26 @@ import {
   searchMoviesFallback,
 } from '../data/movies';
 
-const TMDB_BASE_URL = Keys.TMDB_BASE_URL;
-const TMDB_IMAGE_BASE_URL = Keys.TMDB_IMAGE_BASE_URL;
-const TMDB_READ_ACCESS_TOKEN = getSecureKey('TMDB_READ_ACCESS_TOKEN');
+type KeysModule = {
+  TMDB_BASE_URL?: string;
+  TMDB_IMAGE_BASE_URL?: string;
+  secureFor?: (key: string) => string | undefined;
+};
+
+function loadKeysModule(): KeysModule {
+  try {
+    const loadedModule = require('react-native-keys');
+    return (loadedModule?.default ?? loadedModule) as KeysModule;
+  } catch {
+    return {};
+  }
+}
+
+const Keys = loadKeysModule();
+const TMDB_BASE_URL = Keys.TMDB_BASE_URL?.trim() || 'https://api.themoviedb.org/3';
+const TMDB_IMAGE_BASE_URL =
+  Keys.TMDB_IMAGE_BASE_URL?.trim() || 'https://image.tmdb.org/t/p/w500';
+const TMDB_READ_ACCESS_TOKEN = resolveTmdbReadAccessToken();
 
 const accentPalette = [
   '#C98B12',
@@ -76,11 +92,41 @@ const api = axios.create({
 let cachedGenres: Record<number, string> | null = null;
 
 function getSecureKey(key: string) {
+  if (typeof Keys.secureFor !== 'function') {
+    return '';
+  }
+
   try {
     return Keys.secureFor(key as never)?.trim() ?? '';
   } catch {
     return '';
   }
+}
+
+function getDevelopmentTokenFromKeyFile() {
+  if (!__DEV__) {
+    return '';
+  }
+
+  try {
+    const developmentKeys = require('../../keys.development.json') as {
+      secure?: Record<string, string>;
+    };
+
+    return developmentKeys?.secure?.TMDB_READ_ACCESS_TOKEN?.trim() ?? '';
+  } catch {
+    return '';
+  }
+}
+
+function resolveTmdbReadAccessToken() {
+  const secureToken = getSecureKey('TMDB_READ_ACCESS_TOKEN');
+
+  if (secureToken) {
+    return secureToken;
+  }
+
+  return getDevelopmentTokenFromKeyFile();
 }
 
 function isTmdbConfigured() {

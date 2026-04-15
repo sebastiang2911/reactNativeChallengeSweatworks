@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BookmarkIcon, HomeIcon, SearchIcon } from '../components/Icons';
 import { Movie } from '../data/movies';
@@ -52,6 +53,10 @@ function renderTabBarIcon(routeName: keyof RootTabParamList, focused: boolean, c
 }
 
 function TabsNavigator() {
+  const insets = useSafeAreaInsets();
+  const tabBarBottomPadding = Math.max(insets.bottom, 12);
+  const tabBarHeight = 76 + tabBarBottomPadding;
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -61,9 +66,9 @@ function TabsNavigator() {
           backgroundColor: colors.background,
           borderTopWidth: 2,
           borderTopColor: colors.tabBarBorder,
-          height: 88,
+          height: tabBarHeight,
           paddingTop: 10,
-          paddingBottom: 12,
+          paddingBottom: tabBarBottomPadding,
         },
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.textMuted,

@@ -1,6 +1,12 @@
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 
 import { colors, spacing } from '../../../theme';
+
+const SafeArea = styled(SafeAreaView)`
+  flex: 1;
+  background-color: ${colors.background};
+`;
 
 const Screen = styled.ScrollView.attrs({
   contentContainerStyle: {
@@ -92,5 +98,6 @@ export {
   LoadingState,
   LoadingText,
   Screen,
+  SafeArea,
   Title,
 };

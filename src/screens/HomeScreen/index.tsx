@@ -35,6 +35,7 @@ import {
   LoadingState,
   LoadingText,
   Screen,
+  SafeArea,
   Title,
 } from './styles';
 
@@ -91,69 +92,71 @@ function HomeScreen({ navigation }: Props) {
   }, []);
 
   return (
-    <Screen showsVerticalScrollIndicator={false}>
-      <Content>
-        <Title>What do you want to watch?</Title>
+    <SafeArea>
+      <Screen showsVerticalScrollIndicator={false}>
+        <Content>
+          <Title>What do you want to watch?</Title>
 
-        <Pressable onPress={() => navigation.navigate('Search')}>
-          <SearchBar placeholder="Search" editable={false} />
-        </Pressable>
+          <Pressable onPress={() => navigation.navigate('Search')}>
+            <SearchBar placeholder="Search" editable={false} />
+          </Pressable>
 
-        {usingFallback ? (
-          <HelperText>
-            Add your TMDB read access token in `keys.development.json` and rebuild to
-            load live data.
-          </HelperText>
-        ) : null}
+          {usingFallback ? (
+            <HelperText>
+              Add your TMDB read access token in `keys.development.json` and rebuild to
+              load live data.
+            </HelperText>
+          ) : null}
 
-        <FeaturedRow horizontal showsHorizontalScrollIndicator={false}>
-          {featuredMovies.map((movie, index) => (
-            <MoviePoster
-              key={movie.id}
-              movie={movie}
-              size="large"
-              rank={index + 1}
-              onPress={() => navigation.navigate('Detail', { movie })}
-            />
-          ))}
-        </FeaturedRow>
+          <FeaturedRow horizontal showsHorizontalScrollIndicator={false}>
+            {featuredMovies.map((movie, index) => (
+              <MoviePoster
+                key={movie.id}
+                movie={movie}
+                size="large"
+                rank={index + 1}
+                onPress={() => navigation.navigate('Detail', { movie })}
+              />
+            ))}
+          </FeaturedRow>
 
-        {loading ? (
-          <LoadingState>
-            <ActivityIndicator size="small" color={colors.accent} />
-            <LoadingText>Loading movies...</LoadingText>
-          </LoadingState>
-        ) : (
-          <>
-            <CategoryRow>
-              {categories.map(category => {
-                const active = category === selectedCategory;
+          {loading ? (
+            <LoadingState>
+              <ActivityIndicator size="small" color={colors.accent} />
+              <LoadingText>Loading movies...</LoadingText>
+            </LoadingState>
+          ) : (
+            <>
+              <CategoryRow>
+                {categories.map(category => {
+                  const active = category === selectedCategory;
 
-                return (
-                  <CategoryButton
-                    key={category}
-                    onPress={() => setSelectedCategory(category)}
-                  >
-                    <CategoryLabel $active={active}>{categoryTitles[category]}</CategoryLabel>
-                    <CategoryIndicator $active={active} />
-                  </CategoryButton>
-                );
-              })}
-            </CategoryRow>
+                  return (
+                    <CategoryButton
+                      key={category}
+                      onPress={() => setSelectedCategory(category)}
+                    >
+                      <CategoryLabel $active={active}>{categoryTitles[category]}</CategoryLabel>
+                      <CategoryIndicator $active={active} />
+                    </CategoryButton>
+                  );
+                })}
+              </CategoryRow>
 
-            <Grid>
-              {categoryMovies[selectedCategory].slice(0, 6).map(movie => (
-                <MoviePoster
-                  key={movie.id}
-                  movie={movie}
-                  onPress={() => navigation.navigate('Detail', { movie })}
-                />
-              ))}
-            </Grid>
-          </>
-        )}
-      </Content>
-    </Screen>
+              <Grid>
+                {categoryMovies[selectedCategory].slice(0, 6).map(movie => (
+                  <MoviePoster
+                    key={movie.id}
+                    movie={movie}
+                    onPress={() => navigation.navigate('Detail', { movie })}
+                  />
+                ))}
+              </Grid>
+            </>
+          )}
+        </Content>
+      </Screen>
+    </SafeArea>
   );
 }
 
